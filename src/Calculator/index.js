@@ -56,7 +56,7 @@ export default function Calculator() {
             <button className='numpad-btn' type='button'>+/-</button>
             <button className='numpad-btn' type='button' onClick={handleClick} value='0'>0</button>
             <button className='numpad-btn' type='button' onClick={handleClick} value='.'>.</button>
-            <button className='operator-btn' type='button' onClick={evalExp} value='='>=</button>
+            <button className='operator-btn' type='button' onClick={evalExp}>=</button>
         </>
     )
 }
