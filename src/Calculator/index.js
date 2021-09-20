@@ -7,6 +7,11 @@ export default function Calculator() {
     const [input, setInput] = useState('');   // start with a string for now
     const [output, setOutput] = useState('');
 
+    const handleClear = () => {
+        setInput('');
+        setOutput('');
+    }
+
     const handleClick = ({target}) => {
         const {value} = target;
         let newInput = input;
@@ -28,7 +33,7 @@ export default function Calculator() {
             <p className='input'>{input}</p>
             <p className='output'>{output}</p>
 
-            <button className='clear-btn' type='button' onClick={() => {setInput(''); setOutput('')}}>Clear</button>
+            <button className='clear-btn' type='button' onClick={handleClear}>Clear</button>
 
             <button className='operator-btn' type='button' onClick={handleClick} value='%'>%</button>
             <button className='operator-btn' type='button' onClick={handleClick} value='/'>÷</button>
