@@ -1,0 +1,23 @@
+.input {
+    min-height: 100px;
+    border: 1px solid black;
+    text-align: right;
+}
+
+.output {
+    min-height: 50px;
+    border: 1px solid black;
+    text-align: right;
+}
+
+.clear-btn, .operator-btn, .numpad-btn {
+    min-height: 50px;
+}
+
+.clear-btn {
+    width: 50%;
+}
+
+.operator-btn, .numpad-btn {
+    width: 25%;
+}
