@@ -4,59 +4,57 @@ import '../Calculator/Calculator.css'
 
 export default function Calculator() {
 
-    const [operand, setOperand] = useState(null);
-    const [expression, setExpression] = useState('');
+    const [operand, setOperand] = useState('');
+    const [expression, setExpression] = useState([]);
     const [result, setResult] = useState('');
 
-    const handleClear = () => {
-        setOperand(null);
-        setExpression('');
+    // reset all state hooks
+    const handleClearAll = () => {
+        setOperand('');
+        setExpression([]);
         setResult('');
     }
 
-    const handleClick = ({ target }) => {
-        let updatedExpression = expression;
-        updatedExpression += target.value;
-
-        setExpression(updatedExpression);
-    }
-
-    const evalExp = () => {
-        const updatedResult = eval(expression);
-
-        setResult(expression + ' = ' + updatedResult);
-        setExpression(updatedResult);
+    // reset current operand state
+    const handleClearOperand = () => {
+        setOperand('');
     }
 
     return (
         <>
-            <p className='input'>{expression}</p>
+            <p className='input'>{expression.join('') + operand}</p>
             <p className='output'>{result}</p>
 
-            <button className='clear-btn' type='button' onClick={handleClear}>Clear</button>
+            <button className='operator-btn' type='button'>BKSPC</button>
+            <button className='clear-btn' type='button' onClick={handleClearOperand}>C</button>
+            <button className='clear-btn' type='button' onClick={handleClearAll}>AC</button>
 
-            <button className='operator-btn' type='button' onClick={handleClick} value='%'>%</button>
-            <button className='operator-btn' type='button' onClick={handleClick} value='/'>÷</button>
 
-            <button className='numpad-btn' type='button' onClick={handleClick} value='7'>7</button>
-            <button className='numpad-btn' type='button' onClick={handleClick} value='8'>8</button>
-            <button className='numpad-btn' type='button' onClick={handleClick} value='9'>9</button>
-            <button className='operator-btn' type='button' onClick={handleClick} value='*'>×</button>
+            <button className='operator-btn' type='button' onClick={handleOperator} value='/'>÷</button>
 
-            <button className='numpad-btn' type='button' onClick={handleClick} value='4'>4</button>
-            <button className='numpad-btn' type='button' onClick={handleClick} value='5'>5</button>
-            <button className='numpad-btn' type='button' onClick={handleClick} value='6'>6</button>
-            <button className='operator-btn' type='button' onClick={handleClick} value='-'>-</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='7'>7</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='8'>8</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='9'>9</button>
 
-            <button className='numpad-btn' type='button' onClick={handleClick} value='1'>1</button>
-            <button className='numpad-btn' type='button' onClick={handleClick} value='2'>2</button>
-            <button className='numpad-btn' type='button' onClick={handleClick} value='3'>3</button>
-            <button className='operator-btn' type='button' onClick={handleClick} value='+'>+</button>
+            <button className='operator-btn' type='button' onClick={handleOperator} value='*'>×</button>
 
-            <button className='numpad-btn' type='button'>+/-</button>
-            <button className='numpad-btn' type='button' onClick={handleClick} value='0'>0</button>
-            <button className='numpad-btn' type='button' onClick={handleClick} value='.'>.</button>
-            <button className='operator-btn' type='button' onClick={evalExp}>=</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='4'>4</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='5'>5</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='6'>6</button>
+
+            <button className='operator-btn' type='button' onClick={handleOperator} value='-'>-</button>
+
+            <button className='numpad-btn' type='button' onClick={handleNum} value='1'>1</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='2'>2</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='3'>3</button>
+
+            <button className='operator-btn' type='button' onClick={handleOperator} value='+'>+</button>
+
+            <button className='numpad-btn' type='button' onClick={toggleNegative}>+/-</button>
+            <button className='numpad-btn' type='button' onClick={handleNum} value='0'>0</button>
+
+            <button className='numpad-btn' type='button' onClick={handleDecimal} value='.'>.</button>
+            <button className='operator-btn' type='button' value='='>=</button>
         </>
     )
 }
