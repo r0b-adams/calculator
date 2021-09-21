@@ -37,7 +37,6 @@ export default function Calculator() {
         }
     }
 
-
     // toggle negative sign on current operand
     const toggleNegative = () => {
         let updatedOperand = parseFloat(operand); // copy state and convert to number
@@ -45,6 +44,18 @@ export default function Calculator() {
         setOperand(updatedOperand.toString());    // convert it back to string and update state
     }
 
+    // add a decimal point to current operand
+    const handleDecimal = () => {
+
+        // only one decimal point per operand allowed
+        if (!operand.includes('.')) {
+            let updatedOperand = operand; // copy state
+            updatedOperand += '.';        // append decimal
+            setOperand(updatedOperand);   // update state
+        } else {
+            alert('Invalid Format');      // operand contains decimal
+        }
+    }
 
     return (
         <>
