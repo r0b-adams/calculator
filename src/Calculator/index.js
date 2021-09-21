@@ -39,9 +39,11 @@ export default function Calculator() {
 
     // toggle negative sign on current operand
     const toggleNegative = () => {
-        let updatedOperand = parseFloat(operand); // copy state and convert to number
-        updatedOperand *= -1;                     // flip sign
-        setOperand(updatedOperand.toString());    // convert it back to string and update state
+        if (operand.length) {
+            let updatedOperand = parseFloat(operand); // copy state and convert to number
+            updatedOperand *= -1;                     // flip sign
+            setOperand(updatedOperand.toString());    // convert it back to string and update state
+        }
     }
 
     // add a decimal point to current operand
@@ -68,6 +70,7 @@ export default function Calculator() {
                 updatedExpression[updatedExpression.length - 1] = operator; // replace prev operator with new one
                 setExpression(updatedExpression);                           // update state
             }
+
         } else {
             updatedExpression.push(operand);  // add operand to expression array
             updatedExpression.push(operator); // add operator to expression array
@@ -112,5 +115,5 @@ export default function Calculator() {
             <button className='numpad-btn' type='button' onClick={handleDecimal} value='.'>.</button>
             <button className='operator-btn' type='button' value='='>=</button>
         </>
-    )
+    );
 }
