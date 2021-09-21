@@ -4,34 +4,34 @@ import '../Calculator/Calculator.css'
 
 export default function Calculator() {
 
-    const [input, setInput] = useState('');   // start with a string for now
-    const [output, setOutput] = useState('');
+    const [operand, setOperand] = useState(null);
+    const [expression, setExpression] = useState('');
+    const [result, setResult] = useState('');
 
     const handleClear = () => {
-        setInput('');
-        setOutput('');
+        setOperand(null);
+        setExpression('');
+        setResult('');
     }
 
-    const handleClick = ({target}) => {
-        const {value} = target;
-        let newInput = input;
-        newInput += value;
-        setInput(newInput);
+    const handleClick = ({ target }) => {
+        let updatedExpression = expression;
+        updatedExpression += target.value;
+
+        setExpression(updatedExpression);
     }
 
     const evalExp = () => {
-        // NOTE: eval() only works with valid expressions
-        // will throw error if unexpected token encountered
-        const result = eval(input);
+        const updatedResult = eval(expression);
 
-        setOutput(input + ' = ' + result);
-        setInput(result);
+        setResult(expression + ' = ' + updatedResult);
+        setExpression(updatedResult);
     }
 
     return (
         <>
-            <p className='input'>{input}</p>
-            <p className='output'>{output}</p>
+            <p className='input'>{expression}</p>
+            <p className='output'>{result}</p>
 
             <button className='clear-btn' type='button' onClick={handleClear}>Clear</button>
 
