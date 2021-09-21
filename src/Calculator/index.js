@@ -20,6 +20,24 @@ export default function Calculator() {
         setOperand('');
     }
 
+    // user clicks a number button
+    const handleNum = ({ target: { value } }) => {
+
+        // if user has entered zero, they can only proceed with a decimal point
+        if (operand !== '0') {
+
+            // maximum number of digits is 15
+            if (operand.length < 15) {
+                let updatedOperand = operand;   // copy state
+                updatedOperand += value; // append digit to operand
+                setOperand(updatedOperand);     // update state
+            } else {
+                alert('maximum operand length (15) exceeded'); // operand too long
+            }
+        }
+    }
+
+
     return (
         <>
             <p className='input'>{expression.join('') + operand}</p>
