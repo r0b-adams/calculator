@@ -38,6 +38,14 @@ export default function Calculator() {
     }
 
 
+    // toggle negative sign on current operand
+    const toggleNegative = () => {
+        let updatedOperand = parseFloat(operand); // copy state and convert to number
+        updatedOperand *= -1;                     // flip sign
+        setOperand(updatedOperand.toString());    // convert it back to string and update state
+    }
+
+
     return (
         <>
             <p className='input'>{expression.join('') + operand}</p>
