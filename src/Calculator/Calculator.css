@@ -14,10 +14,6 @@
     min-height: 50px;
 }
 
-.clear-btn {
-    width: 50%;
-}
-
-.operator-btn, .numpad-btn {
+.operator-btn, .numpad-btn, .clear-btn {
     width: 25%;
 }
