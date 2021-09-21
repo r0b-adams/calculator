@@ -57,6 +57,25 @@ export default function Calculator() {
         }
     }
 
+    const handleOperator = ({ target: { value: operator } }) => {
+        let updatedExpression = [...expression]; //copy state
+
+        // if user has not entered any numbers for this operand
+        if (!operand.length) {
+
+            // and there are elements in the expression array
+            if (expression.length) {
+                updatedExpression[updatedExpression.length - 1] = operator; // replace prev operator with new one
+                setExpression(updatedExpression);                           // update state
+            }
+        } else {
+            updatedExpression.push(operand);  // add operand to expression array
+            updatedExpression.push(operator); // add operator to expression array
+            setExpression(updatedExpression); // update expression state
+            setOperand('');                   // reset operand state
+        }
+    }
+
     return (
         <>
             <p className='input'>{expression.join('') + operand}</p>
