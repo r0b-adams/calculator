@@ -46,6 +46,7 @@ export default function Calculator() {
         }
     }
 
+    // TODO: if user clicks decimal when operand is empty, pad with a zero: .4 => 0.4
     // add a decimal point to current operand
     const handleDecimal = () => {
 
