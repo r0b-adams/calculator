@@ -46,20 +46,21 @@ export default function Calculator() {
         }
     }
 
-    // TODO: if user clicks decimal when operand is empty, pad with a zero: .4 => 0.4
     // add a decimal point to current operand
     const handleDecimal = () => {
-
-        // only one decimal point per operand allowed
-        if (!operand.includes('.')) {
-            let updatedOperand = operand; // copy state
-            updatedOperand += '.';        // append decimal
-            setOperand(updatedOperand);   // update state
+        if (operand.includes('.')) {      //operand already contains decimal point
+            alert('invalid format');
         } else {
-            alert('Invalid Format');      // operand contains decimal
+            let updatedOperand = operand; // copy state
+            if (!operand.length) {        // if operand empty,
+                updatedOperand += '0';    // pad with a zero
+            }
+            updatedOperand += '.';        // append decimal point
+            setOperand(updatedOperand);   // update state
         }
     }
 
+    // params: deconstruct event.target.value as operator
     const handleOperator = ({ target: { value: operator } }) => {
         let updatedExpression = [...expression]; //copy state
 
