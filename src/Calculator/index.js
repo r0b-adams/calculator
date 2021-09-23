@@ -21,28 +21,49 @@ export default function Calculator() {
     }
 
     // user clicks a number button
-    const handleNum = ({ target: { value } }) => {
+    // params: deconstruct event.target.value as digit
+    const handleNum = ({ target: { value: digit } }) => {
 
         // if user has entered zero, they can only proceed with a decimal point
         if (operand !== '0') {
 
             // maximum number of digits is 15
             if (operand.length < 15) {
-                let updatedOperand = operand;   // copy state
-                updatedOperand += value; // append digit to operand
-                setOperand(updatedOperand);     // update state
+                let updateOperand = operand;   // copy state
+                updateOperand += digit; // append digit to operand
+                setOperand(updateOperand);     // update state
             } else {
-                alert('maximum operand length (15) exceeded'); // operand too long
+                alert('maximum operand length (15) exceeded');
             }
         }
     }
 
-    // toggle negative sign on current operand
     const toggleNegative = () => {
-        if (operand.length) {
-            let updatedOperand = parseFloat(operand); // copy state and convert to number
-            updatedOperand *= -1;                     // flip sign
-            setOperand(updatedOperand.toString());    // convert it back to string and update state
+        const isNegative = operand.startsWith('(-');
+
+        if (isNegative) {
+            if (operand === '(-') { // if operand only contains '(-',
+                setOperand('');         // reset operand to empty string
+
+            // operand is some form of '(-XY.Z' or '(-XY.Z)'
+            } else {
+                let updateOperand;
+                if (operand.endsWith(')')) {
+
+                    // has closing parenthesis, grab everything between '(-' and ')'
+                    updateOperand = operand.substring(2, operand.length - 1);
+                } else {
+
+                    // no closing parenthesis, grab everything after '(-'
+                    updateOperand = operand.substring(2);
+                }
+                setOperand(updateOperand);
+            }
+
+        // number is positive, prepend '(-' and update state
+        } else {
+            let updateOperand = `(-${operand}`;
+            setOperand(updateOperand);
         }
     }
 
@@ -51,33 +72,36 @@ export default function Calculator() {
         if (operand.includes('.')) {      //operand already contains decimal point
             alert('invalid format');
         } else {
-            let updatedOperand = operand; // copy state
-            if (!operand.length) {        // if operand empty,
-                updatedOperand += '0';    // pad with a zero
+            let updateOperand = operand; // copy state
+            if (!operand.length) {       // if operand empty,
+                updateOperand += '0';       // pad with a zero
             }
-            updatedOperand += '.';        // append decimal point
-            setOperand(updatedOperand);   // update state
+            updateOperand += '.';        // append decimal point
+            setOperand(updateOperand);   // update state
         }
     }
 
     // params: deconstruct event.target.value as operator
+    // TODO: if operand has ( append )
+    // TODO: if operand === "(-", do nothing
     const handleOperator = ({ target: { value: operator } }) => {
-        let updatedExpression = [...expression]; //copy state
+        let updateOperand = operand;
+        let updateExpression = [...expression];
 
         // if user has not entered any numbers for this operand
-        if (!operand.length) {
+        if (!updateOperand.length) {
 
             // and there are elements in the expression array
             if (expression.length) {
-                updatedExpression[updatedExpression.length - 1] = operator; // replace prev operator with new one
-                setExpression(updatedExpression);                           // update state
+                updateExpression[updateExpression.length - 1] = operator; // replace prev operator with new one
+                setExpression(updateExpression);                          // update state
             }
 
         } else {
-            updatedExpression.push(operand);  // add operand to expression array
-            updatedExpression.push(operator); // add operator to expression array
-            setExpression(updatedExpression); // update expression state
-            setOperand('');                   // reset operand state
+            updateExpression.push(updateOperand);  // add operand to expression array
+            updateExpression.push(operator);       // add operator to expression array
+            setExpression(updateExpression);       // update expression state
+            setOperand('');                        // reset operand state
         }
     }
 
