@@ -38,6 +38,7 @@ export default function Calculator() {
         }
     }
 
+    // toggle current operand to be negative
     const toggleNegative = () => {
         const isNegative = operand.startsWith('(-');
 
