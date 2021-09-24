@@ -29,9 +29,9 @@ export default function Calculator() {
 
             // maximum number of digits is 15
             if (operand.length < 15) {
-                let updateOperand = operand;   // copy state
-                updateOperand += digit; // append digit to operand
-                setOperand(updateOperand);     // update state
+                let updatedOperand = operand;   // copy state
+                updatedOperand += digit; // append digit to operand
+                setOperand(updatedOperand);     // update state
             } else {
                 alert('maximum operand length (15) exceeded');
             }
@@ -48,67 +48,76 @@ export default function Calculator() {
 
             // operand is some form of '(-XY.Z' or '(-XY.Z)'
             } else {
-                let updateOperand;
+                let updatedOperand;
                 if (operand.endsWith(')')) {
 
                     // has closing parenthesis, grab everything between '(-' and ')'
-                    updateOperand = operand.substring(2, operand.length - 1);
+                    updatedOperand = operand.substring(2, operand.length - 1);
                 } else {
 
                     // no closing parenthesis, grab everything after '(-'
-                    updateOperand = operand.substring(2);
+                    updatedOperand = operand.substring(2);
                 }
-                setOperand(updateOperand);
+                setOperand(updatedOperand);
             }
 
         // number is positive, prepend '(-' and update state
         } else {
-            let updateOperand = `(-${operand}`;
-            setOperand(updateOperand);
+            let updatedOperand = `(-${operand}`;
+            setOperand(updatedOperand);
         }
     }
 
     // add a decimal point to current operand
     const handleDecimal = () => {
-        if (operand.includes('.')) {      //operand already contains decimal point
+        if (operand.includes('.')) {     // operand already contains decimal point
             alert('invalid format');
         } else {
-            let updateOperand = operand; // copy state
-            if (!operand.length) {       // if operand empty,
-                updateOperand += '0';       // pad with a zero
+            let updatedOperand = operand;              // copy state
+            if (!operand.length || operand === '(-') { // if operand empty or opens with negative
+                updatedOperand += '0';                 // pad with a zero
             }
-            updateOperand += '.';        // append decimal point
-            setOperand(updateOperand);   // update state
+            updatedOperand += '.';        // append decimal point
+            setOperand(updatedOperand);   // update state
         }
     }
 
+    // validate operand, pad with any needed chars, and push to expression
     // params: deconstruct event.target.value as operator
-    // TODO: if operand has ( append )
-    // TODO: if operand === "(-", do nothing
     const handleOperator = ({ target: { value: operator } }) => {
-        let updateOperand = operand;
-        let updateExpression = [...expression];
+        let updatedExpression = [...expression];
 
-        // if user has not entered any numbers for this operand
-        if (!updateOperand.length) {
+        // be sure there is something to work with
+        if (operand.length && operand !== '(-') {
+            let updatedOperand = operand;
 
-            // and there are elements in the expression array
-            if (expression.length) {
-                updateExpression[updateExpression.length - 1] = operator; // replace prev operator with new one
-                setExpression(updateExpression);                          // update state
+            // append zero if operand ends with decimal
+            if (updatedOperand.endsWith('.')) {
+                updatedOperand += '0';
             }
 
-        } else {
-            updateExpression.push(updateOperand);  // add operand to expression array
-            updateExpression.push(operator);       // add operator to expression array
-            setExpression(updateExpression);       // update expression state
-            setOperand('');                        // reset operand state
+            // append ')' if operand is negative
+            if (updatedOperand.startsWith('(-')) {
+                updatedOperand += ')';
+            }
+
+            updatedExpression.push(updatedOperand);
+            updatedExpression.push(operator);
+            setExpression(updatedExpression);
+            setOperand('');
+
+        // operand is empty; check expression
+        // if it contains elements, replace the previous operator with new one
+        } else if (expression.length) {
+            updatedExpression[updatedExpression.length - 1] = operator;
+            setExpression(updatedExpression);
         }
     }
 
     return (
         <>
-            <p className='input'>{expression.join('') + operand}</p>
+            <p className='input'>{expression.join(' ') + ' ' + operand}</p>
+
             <p className='output'>{result}</p>
 
             <button className='operator-btn' type='button'>BKSPC</button>
