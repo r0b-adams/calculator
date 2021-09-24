@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-// import { create, all } from 'mathjs';
+import { create, all } from 'mathjs';
 import '../Calculator/Calculator.css';
 
 // https://mathjs.org/docs/index.html
-// const math = create(all);
+const math = create(all);
 
 export default function Calculator() {
 
@@ -88,8 +88,8 @@ export default function Calculator() {
     // validate operand, pad with any needed chars, and push to expression
     // params: deconstruct event.target.value as operator
     const handleOperator = ({ target: { value: operator } }) => {
-        let updatedExpression = [...expression];
-        let validatedOperand = checkOperand();
+        const updatedExpression = [...expression];
+        const validatedOperand = checkOperand();
 
         // make sure operand valid
         if (validatedOperand) {
@@ -127,26 +127,24 @@ export default function Calculator() {
         return undefined;
     }
 
-    // TODO: before evaluation, validate operand like in handleOperator
-        // close pars, append 0 if ends in
-        const handleEquals = () => {
-            // console.log(expression);
+    const handleEquals = () => {
+        const finalExpression = [...expression];
+        const lastOperand = checkOperand();
 
-            // try {
-            //     let exp = expression.join('') + operand;
-            //     let res = math.evaluate(exp);
-            //     res = math.format(res, {precision: 10});
+        if (lastOperand) {
+            try {
+                finalExpression.push(lastOperand);
+                let res = math.evaluate(finalExpression.join(''));
+                res = math.format(res, {precision: 10});
 
-            //     if (res) {
-            //         setResult(`= ${res}`);
-            //         setExpression([]);
-            //         setOperand(res);
-            //     }
-
-            // } catch (error) {
-            //     alert('invalid expression');
-            // }
+                setResult(`= ${res}`);
+                setOperand(res);
+                setExpression([]);
+            } catch (error) {
+                alert('invalid expression');
+            }
         }
+    }
 
     return (
         <>
@@ -157,7 +155,6 @@ export default function Calculator() {
             <button className='operator-btn' type='button'>BKSPC</button>
             <button className='clear-btn' type='button' onClick={handleClearOperand}>C</button>
             <button className='clear-btn' type='button' onClick={handleClearAll}>AC</button>
-
 
             <button className='operator-btn' type='button' onClick={handleOperator} value='/'>÷</button>
 
