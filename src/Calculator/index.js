@@ -1,6 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { create, all } from 'mathjs';
+import '../Calculator/Calculator.css';
 
-import '../Calculator/Calculator.css'
+const math = create(all);
+
+// test expression
+console.log(math.evaluate('(-1.0) + 1.0'))
 
 export default function Calculator() {
 
