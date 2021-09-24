@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { create, all } from 'mathjs';
+// import { create, all } from 'mathjs';
 import '../Calculator/Calculator.css';
 
 // https://mathjs.org/docs/index.html
-const math = create(all);
+// const math = create(all);
 
 export default function Calculator() {
 
@@ -89,50 +89,63 @@ export default function Calculator() {
     // params: deconstruct event.target.value as operator
     const handleOperator = ({ target: { value: operator } }) => {
         let updatedExpression = [...expression];
+        let validatedOperand = checkOperand();
 
-        // be sure there is something to work with
-        if (operand.length && operand !== '(-') {
-            let updatedOperand = operand;
-
-            // append zero if operand ends with decimal
-            if (updatedOperand.endsWith('.')) {
-                updatedOperand += '0';
-            }
-
-            // append ')' if operand is negative
-            if (updatedOperand.startsWith('(-')) {
-                updatedOperand += ')';
-            }
-
-            updatedExpression.push(updatedOperand);
+        // make sure operand valid
+        if (validatedOperand) {
+            updatedExpression.push(validatedOperand);
             updatedExpression.push(operator);
             setExpression(updatedExpression);
-            setOperand('');
 
-        // operand is empty; check expression
+        // operand is empty or has no numbers, check expression
         // if it contains elements, replace the previous operator with new one
         } else if (expression.length) {
             updatedExpression[updatedExpression.length - 1] = operator;
             setExpression(updatedExpression);
         }
+        setOperand('');
+    }
+
+    // after user clicks operator or '=', check the operand and add any needed closing chars
+    const checkOperand = () => {
+
+        // make sure there is something to work with
+        if (operand.length && operand !== '(-') {
+            let checkedOperand = operand;
+
+            // append zero if operand ends with decimal
+            if (checkedOperand.endsWith('.')) {
+                checkedOperand += '0';
+            }
+
+            // append ')' if operand is negative and it isn't already closed
+            if (checkedOperand.startsWith('(-') && !checkedOperand.endsWith(')')) {
+                checkedOperand += ')';
+            }
+            return checkedOperand;
+        }
+        return undefined;
     }
 
     // TODO: before evaluation, validate operand like in handleOperator
         // close pars, append 0 if ends in
         const handleEquals = () => {
-            try {
-                const exp = expression.join('') + operand;
-                const res = math.evaluate(exp);
+            // console.log(expression);
 
-                if (res) {
-                    setResult(`= ${res}`);
-                    setExpression([]);
-                    setOperand(res);
-                }
+            // try {
+            //     let exp = expression.join('') + operand;
+            //     let res = math.evaluate(exp);
+            //     res = math.format(res, {precision: 10});
 
-            } catch (error) {
-                alert('invalid expression');
-            }
+            //     if (res) {
+            //         setResult(`= ${res}`);
+            //         setExpression([]);
+            //         setOperand(res);
+            //     }
+
+            // } catch (error) {
+            //     alert('invalid expression');
+            // }
         }
 
     return (
