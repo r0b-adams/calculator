@@ -117,19 +117,23 @@ export default function Calculator() {
         }
     }
 
-    const handleEquals = () => {
-        try {
-            const exp = expression.join('') + operand;
-            const res = math.evaluate(exp);
+    // TODO: before evaluation, validate operand like in handleOperator
+        // close pars, append 0 if ends in
+        const handleEquals = () => {
+            try {
+                const exp = expression.join('') + operand;
+                const res = math.evaluate(exp);
 
-            if (res) {
-                setResult(`= ${res}`);
+                if (res) {
+                    setResult(`= ${res}`);
+                    setExpression([]);
+                    setOperand(res);
+                }
+
+            } catch (error) {
+                alert('invalid expression');
             }
-
-        } catch (error) {
-            alert('invalid expression');
         }
-    }
 
     return (
         <>
