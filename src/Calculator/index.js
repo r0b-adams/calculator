@@ -117,6 +117,20 @@ export default function Calculator() {
         }
     }
 
+    const handleEquals = () => {
+        try {
+            const exp = expression.join('') + operand;
+            const res = math.evaluate(exp);
+
+            if (res) {
+                setResult(`= ${res}`);
+            }
+
+        } catch (error) {
+            alert('invalid expression');
+        }
+    }
+
     return (
         <>
             <p className='input'>{expression.join(' ') + ' ' + operand}</p>
@@ -152,7 +166,7 @@ export default function Calculator() {
             <button className='numpad-btn' type='button' onClick={handleNum} value='0'>0</button>
 
             <button className='numpad-btn' type='button' onClick={handleDecimal} value='.'>.</button>
-            <button className='operator-btn' type='button' value='='>=</button>
+            <button className='operator-btn' type='button' onClick={handleEquals}>=</button>
         </>
     );
 }
