@@ -9,17 +9,14 @@ import '../Calculator/Calculator.css';   // import styles
 const math = create(all); // instantiate math to parse/eval expression strings
 
 export default function Calculator() {
-
     // initial state
     const [operand, setOperand] = useState('');
     const [expression, setExpression] = useState([]);
-    const [result, setResult] = useState('');
 
     // reset all state hooks
     const handleClearAll = () => {
         setOperand('');
         setExpression([]);
-        setResult('');
     }
 
     // reset current operand state
@@ -37,11 +34,7 @@ export default function Calculator() {
 
             // maximum number of digits is 15
             if (operand.length < 15) {
-
-                // copy state, append digit, and update state
-                let updatedOperand = operand;
-                updatedOperand += digit;
-                setOperand(updatedOperand);
+                setOperand(operand.concat(digit));
             } else {
                 alert('maximum operand length (15) exceeded');
             }
@@ -60,21 +53,17 @@ export default function Calculator() {
 
             // operand is some form of '(-XY.Z' or '(-XY.Z)'
             } else {
-                let updatedOperand;
 
                 // remove negative sign and any parantheses
-                operand.endsWith(')') ? updatedOperand = operand.substring(2, operand.length - 1)
-                                      : updatedOperand = operand.substring(2);
-
-                setOperand(updatedOperand);
+                operand.endsWith(')') ? setOperand(operand.substring(2, operand.length - 1))
+                                      : setOperand(operand.substring(2));
             }
 
         // number is positive
         } else {
 
             // prepend '(-' to operand and update state
-            let updatedOperand = `(-${operand}`;
-            setOperand(updatedOperand);
+            setOperand(`(-${operand}`);
         }
     }
 
@@ -119,7 +108,7 @@ export default function Calculator() {
     const checkOperand = () => {
 
         // make sure there is something to work with
-        if (operand.length && operand !== '(-') {
+        if (operand && operand !== '(-') {
             let checkedOperand = operand;
 
             // append zero if operand ends with decimal
@@ -138,31 +127,36 @@ export default function Calculator() {
 
     // user clicks equals sign to evaluate expression
     const handleEquals = () => {
-        const finalExpression = [...expression]; // copy state
-        const lastOperand = checkOperand();      // check operand
+        const res = getResult();
+
+        if (res) {
+            setExpression([]);
+            setOperand(res);
+        } else {
+            alert('invalid expression');
+        }
+    }
+
+    const getResult = () => {
+        const lastOperand = checkOperand() || '';
+        const finalExpression = expression.join('') + lastOperand;
 
         if (lastOperand) {
-            try { // last operand is valid, add to expression and evaluate
-                finalExpression.push(lastOperand);
-                let res = math.evaluate(finalExpression.join('')); // get the result
-                res = math.format(res, {precision: 10});           // set max digits after decimal to 10
-
-                // update state
-                setResult(`= ${res}`); // prepend '=' to result for display
-                setOperand(res);       // result becomes first operand in next expression
-                setExpression([]);
+            try {
+                let res = math.evaluate(finalExpression);
+                res = math.format(res, {precision: 10});
+                return res.toString();
             } catch (error) {
-                console.log(error);
                 alert('invalid expression');
             }
         }
+        return '';
     }
 
     return (
         <>
             <p className='input'>{expression.join(' ') + ' ' + operand}</p>
-
-            <p className='output'>{result}</p>
+            <p className='output'>{getResult()}</p>
 
             <button className='operator-btn' type='button'>BKSPC</button>
             <button className='clear-btn' type='button' onClick={handleClearOperand}>C</button>
