@@ -31,20 +31,20 @@ export default function Calculator() {
         let copy = operand;
         copy += digit;
 
-        // returns array of digits strings
-        // if decimal point, opVal has two elements (before and after decimal)
+        // returns array of digit strings
+        // if decimal point, opVal has two elements ( digits before and after decimal)
         const opVal = copy.match(/\d+/g); // strips any parentheses and negative sign
 
         // get total number of digits regardless of decimal point
         const opLength = opVal.reduce((total, num) => {
             return total + num.length;
-        }, 0)
+        }, 0);
 
         if (opVal[1] && opVal[1].length > 10) {
             alert('max digits after decimal is 10');
         } else if (opLength > 15) {
             alert('max number of digits is 15');
-        } else {
+        } else if (operand !== '0') {
             setOperand(copy);
         }
     }
@@ -84,8 +84,8 @@ export default function Calculator() {
             if (!operand.length || operand === '(-') { // if operand empty or opens with negative
                 updatedOperand += '0';                 // pad with a zero
             }
-            updatedOperand += '.';        // append decimal point
-            setOperand(updatedOperand);   // update state
+            updatedOperand += '.';      // append decimal point
+            setOperand(updatedOperand); // update state
         }
     }
 
@@ -140,13 +140,11 @@ export default function Calculator() {
         if (res) {
             setExpression([]);
             setOperand(res);
-        } else {
-            alert('invalid expression');
         }
     }
 
     const getResult = () => {
-        const lastOperand = checkOperand() || '';
+        const lastOperand = checkOperand();
         const finalExpression = expression.join('') + lastOperand;
 
         if (lastOperand) {
@@ -155,10 +153,39 @@ export default function Calculator() {
                 res = math.format(res, {precision: 10});
                 return res.toString();
             } catch (error) {
-                alert('invalid expression');
+                console.log('invalid expression');
             }
         }
         return '';
+    }
+
+    // delete from expression
+    const handleBackspace = () => {
+
+        if (operand.length) {
+
+            if (operand.endsWith('(-') || operand === '0.') {
+                setOperand('');
+            } else if (operand.endsWith('(-0.')) {
+                setOperand('(-');
+            } else {
+                setOperand(operand.slice(0, -1));
+            }
+
+        } else if (expression.length) {
+            const copy = [...expression];
+            let newOperand = copy.pop();
+
+            if (newOperand === '+' ||
+                newOperand === '-' ||
+                newOperand === '*' ||
+                newOperand === '-') {
+                    newOperand = copy.pop();
+                }
+
+            setOperand(newOperand);
+            setExpression([...copy]);
+        }
     }
 
     return (
@@ -166,7 +193,7 @@ export default function Calculator() {
             <p className='input'>{expression.join(' ') + ' ' + operand}</p>
             <p className='output'>{getResult()}</p>
 
-            <button className='operator-btn' type='button'>BKSPC</button>
+            <button className='operator-btn' type='button' onClick={handleBackspace}>BKSPC</button>
             <button className='clear-btn' type='button' onClick={handleClearOperand}>C</button>
             <button className='clear-btn' type='button' onClick={handleClearAll}>AC</button>
 
