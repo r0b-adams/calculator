@@ -35,6 +35,7 @@ export default function Calculator() {
         // if decimal point, opVal has two elements (before and after decimal)
         const opVal = copy.match(/\d+/g); // strips any parentheses and negative sign
 
+        // get total number of digits regardless of decimal point
         const opLength = opVal.reduce((total, num) => {
             return total + num.length;
         }, 0)
