@@ -28,16 +28,12 @@ export default function Calculator() {
     // user clicks a number button
     // params: deconstruct event.target.value as digit
     const handleNum = ({ target: { value: digit } }) => {
-        // constraints
-        // total digits max'd at 15
-        // total digits after decimal max'd at 10
-
-        // strip away parentheses and negative signs if any
-        // split on '.'
-
         let copy = operand;
         copy += digit;
-        const opVal = copy.match(/\d+/g); // returns array
+
+        // returns array of digits strings
+        // if decimal point, opVal has two elements (before and after decimal)
+        const opVal = copy.match(/\d+/g); // strips any parentheses and negative sign
 
         const opLength = opVal.reduce((total, num) => {
             return total + num.length;
@@ -50,26 +46,6 @@ export default function Calculator() {
         } else {
             setOperand(copy);
         }
-
-        // if (opLength < 15) {
-        //     setOperand(operand.concat(digit));
-        // } else {
-        //     alert('maximum operand length (15) exceeded');
-        // }
-
-
-        // if opVal[1]
-
-        // if user has entered zero, they can only proceed with a decimal point
-        // check the match array
-            // if only one element, its length is operand length
-            // else add the length of both elements
-            // could use reduce
-
-        // if (operand !== '0') {
-
-            // maximum number of digits is 15
-
     }
 
     // toggle current operand to be negative or positive
