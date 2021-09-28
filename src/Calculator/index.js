@@ -9,6 +9,7 @@ import '../Calculator/Calculator.css';   // import styles
 const math = create(all); // instantiate math to parse/eval expression strings
 
 export default function Calculator() {
+
     // initial state
     const [operand, setOperand] = useState('');
     const [expression, setExpression] = useState([]);
@@ -24,21 +25,51 @@ export default function Calculator() {
         setOperand('');
     }
 
-    // TODO: restrict number of digits after decimal to 10
     // user clicks a number button
     // params: deconstruct event.target.value as digit
     const handleNum = ({ target: { value: digit } }) => {
+        // constraints
+        // total digits max'd at 15
+        // total digits after decimal max'd at 10
+
+        // strip away parentheses and negative signs if any
+        // split on '.'
+
+        let copy = operand;
+        copy += digit;
+        const opVal = copy.match(/\d+/g); // returns array
+
+        const opLength = opVal.reduce((total, num) => {
+            return total + num.length;
+        }, 0)
+
+        if (opVal[1] && opVal[1].length > 10) {
+            alert('max digits after decimal is 10');
+        } else if (opLength > 15) {
+            alert('max number of digits is 15');
+        } else {
+            setOperand(copy);
+        }
+
+        // if (opLength < 15) {
+        //     setOperand(operand.concat(digit));
+        // } else {
+        //     alert('maximum operand length (15) exceeded');
+        // }
+
+
+        // if opVal[1]
 
         // if user has entered zero, they can only proceed with a decimal point
-        if (operand !== '0') {
+        // check the match array
+            // if only one element, its length is operand length
+            // else add the length of both elements
+            // could use reduce
+
+        // if (operand !== '0') {
 
             // maximum number of digits is 15
-            if (operand.length < 15) {
-                setOperand(operand.concat(digit));
-            } else {
-                alert('maximum operand length (15) exceeded');
-            }
-        }
+
     }
 
     // toggle current operand to be negative or positive
