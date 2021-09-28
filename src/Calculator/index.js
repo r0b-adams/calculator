@@ -162,29 +162,28 @@ export default function Calculator() {
     // delete from expression
     const handleBackspace = () => {
 
+        // delete from operand if it isn't empty
         if (operand.length) {
-
-            if (operand.endsWith('(-') || operand === '0.') {
-                setOperand('');
-            } else if (operand.endsWith('(-0.')) {
-                setOperand('(-');
-            } else {
-                setOperand(operand.slice(0, -1));
+            switch (operand) {
+                case '(-':
+                case '0.':
+                    setOperand('');
+                    break;
+                case '(-0.':
+                    setOperand('(-');
+                    break
+                default:
+                    setOperand(operand.slice(0, -1));
+                    break;
             }
 
+        // else update expression
         } else if (expression.length) {
-            const copy = [...expression];
-            let newOperand = copy.pop();
-
-            if (newOperand === '+' ||
-                newOperand === '-' ||
-                newOperand === '*' ||
-                newOperand === '-') {
-                    newOperand = copy.pop();
-                }
+            const updatedExpression = [...expression].slice(0, -1); // remove operator
+            const newOperand = updatedExpression.pop();             // last operand becomes current operand
 
             setOperand(newOperand);
-            setExpression([...copy]);
+            setExpression(updatedExpression);
         }
     }
 
