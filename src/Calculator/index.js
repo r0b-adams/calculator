@@ -143,11 +143,12 @@ export default function Calculator() {
         }
     }
 
+    // calculate expression result and return for display
     const getResult = () => {
         const lastOperand = checkOperand();
         const finalExpression = expression.join('') + lastOperand;
 
-        if (lastOperand) {
+        if (lastOperand) { // undefined if operand is empty
             try {
                 let res = math.evaluate(finalExpression);
                 res = math.format(res, {precision: 10});
