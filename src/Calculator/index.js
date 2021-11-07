@@ -2,6 +2,9 @@ import React, { useState } from 'react'; // import hook to store component state
 import { create, all } from 'mathjs';    // import Math.js to evaluate expressions
 import '../Calculator/Calculator.css';   // import styles
 
+import { Button, TextField, Box, Container, Grid, Paper } from '@mui/material';
+import BackspaceIcon from '@mui/icons-material/Backspace';
+
 /**
  * Math.js Documentation:
  * https://mathjs.org/docs/index.html
@@ -190,38 +193,100 @@ export default function Calculator() {
 
     return (
         <>
-            <p className='input'>{expression.join(' ') + ' ' + operand}</p>
-            <p className='output'>{getResult()}</p>
+            <Box>
+                <Container maxWidth="xs">
+                    <Paper elevation={3}>
 
-            <button className='operator-btn' type='button' onClick={handleBackspace}>BKSPC</button>
-            <button className='clear-btn' type='button' onClick={handleClearOperand}>C</button>
-            <button className='clear-btn' type='button' onClick={handleClearAll}>AC</button>
+                        {/* Grid uses flexbox under the hood */}
+                        <Grid container justifyContent={'center'} alignItems={'center'}>
+                            <Grid item xs={12}>
+                                <Paper elevation={1}>
+                                    <TextField fullWidth
+                                               multiline rows={3}
+                                               value={expression.join(' ') + ' ' + operand}
+                                               />
+                                </Paper>
+                            </Grid>
 
-            <button className='operator-btn' type='button' onClick={handleOperator} value='/'>÷</button>
+                            <Grid item xs={12}>
+                                <Paper elevation={1}>
+                                    <TextField fullWidth
+                                               value={getResult()}
+                                               />
+                                </Paper>
+                            </Grid>
 
-            <button className='numpad-btn' type='button' onClick={handleNum} value='7'>7</button>
-            <button className='numpad-btn' type='button' onClick={handleNum} value='8'>8</button>
-            <button className='numpad-btn' type='button' onClick={handleNum} value='9'>9</button>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleBackspace} sx={{ width: 1, height:75}}><BackspaceIcon /></Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleClearOperand} sx={{ width: 1, height:75, fontSize:36}}>C</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleClearAll} sx={{ width: 1, height:75, fontSize:36}}>AC</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained"onClick={handleOperator} value='/' sx={{ width: 1, height:75, fontSize:36}}>÷</Button>
+                            </Grid>
 
-            <button className='operator-btn' type='button' onClick={handleOperator} value='*'>×</button>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='7' sx={{ width: 1, height:75, fontSize:36}}>7</Button>
+                            </Grid >
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='8' sx={{ width: 1, height:75, fontSize:36}}>8</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='9' sx={{ width: 1, height:75, fontSize:36}}>9</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleOperator} value='*' sx={{ width: 1, height:75, fontSize:36}}>×</Button>
+                            </Grid>
 
-            <button className='numpad-btn' type='button' onClick={handleNum} value='4'>4</button>
-            <button className='numpad-btn' type='button' onClick={handleNum} value='5'>5</button>
-            <button className='numpad-btn' type='button' onClick={handleNum} value='6'>6</button>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='4' sx={{ width: 1, height:75, fontSize:36}}>4</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='5' sx={{ width: 1, height:75, fontSize:36}}>5</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='6' sx={{ width: 1, height:75, fontSize:36}}>6</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleOperator} value='-' sx={{ width: 1, height:75, fontSize:36}}>-</Button>
+                            </Grid>
 
-            <button className='operator-btn' type='button' onClick={handleOperator} value='-'>-</button>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='1' sx={{ width: 1, height:75, fontSize:36}}>1</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='2' sx={{ width: 1, height:75, fontSize:36}}>2</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='3' sx={{ width: 1, height:75, fontSize:36}}>3</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleOperator} value='+' sx={{ width: 1, height:75, fontSize:36}}>+</Button>
+                            </Grid>
 
-            <button className='numpad-btn' type='button' onClick={handleNum} value='1'>1</button>
-            <button className='numpad-btn' type='button' onClick={handleNum} value='2'>2</button>
-            <button className='numpad-btn' type='button' onClick={handleNum} value='3'>3</button>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={toggleNegative} sx={{ width: 1, height:75, fontSize:36}}>+/-</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleNum} value='7' sx={{ width: 1, height:75, fontSize:36}}>0</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleDecimal} sx={{ width: 1, height:75, fontSize:36}}>.</Button>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Button variant="contained" onClick={handleEquals} sx={{ width: 1, height:75, fontSize:36}}>=</Button>
+                            </Grid>
 
-            <button className='operator-btn' type='button' onClick={handleOperator} value='+'>+</button>
 
-            <button className='numpad-btn' type='button' onClick={toggleNegative}>+/-</button>
-            <button className='numpad-btn' type='button' onClick={handleNum} value='0'>0</button>
 
-            <button className='numpad-btn' type='button' onClick={handleDecimal} value='.'>.</button>
-            <button className='operator-btn' type='button' onClick={handleEquals}>=</button>
+                        </Grid>
+                    </Paper>
+                </Container>
+            </Box>
         </>
     );
 }
