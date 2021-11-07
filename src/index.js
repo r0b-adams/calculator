@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Calculator from './Calculator';
+import Calculator from './Calculator/Calculator';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
